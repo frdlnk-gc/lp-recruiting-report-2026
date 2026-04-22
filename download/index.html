@@ -12,6 +12,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    var terminTurnstileToken = '';
+    function onTerminTurnstileSuccess(token) { terminTurnstileToken = token; }
+  </script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     :root {
@@ -1014,9 +1018,7 @@
     // *** Make-Webhook-URL hier eintragen (kann derselbe wie LP-Webhook sein, dann mit "source" filtern) ***
     const TERMIN_WEBHOOK_URL = 'https://hook.eu1.make.com/uhmr9pa7tkbvs5uyicjonpmjugv9rvng';
 
-    // === Cloudflare Turnstile Token ===
-    let terminTurnstileToken = '';
-    window.onTerminTurnstileSuccess = function(token) { terminTurnstileToken = token; };
+    // terminTurnstileToken + onTerminTurnstileSuccess sind im <head> definiert (vor Turnstile-Script)
 
     const terminForm = document.getElementById('termin-form');
     if (terminForm) {
