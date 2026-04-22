@@ -12,6 +12,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    var lpTurnstileToken = '';
+    function onLpTurnstileSuccess(token) { lpTurnstileToken = token; }
+  </script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     :root {
@@ -1228,9 +1232,7 @@
     // 4. Im Szenario danach: Slack (Channel: Sales) + HTTP-Request zum Dashboard
     const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/rmo3hsgo61p34rfghkm6fj9flb1ytctc';
 
-    // === Cloudflare Turnstile Token ===
-    let lpTurnstileToken = '';
-    window.onLpTurnstileSuccess = function(token) { lpTurnstileToken = token; };
+    // lpTurnstileToken + onLpTurnstileSuccess sind im <head> definiert (vor Turnstile-Script)
   </script>
 
   <script>
