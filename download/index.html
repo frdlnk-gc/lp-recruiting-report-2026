@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     :root {
       --moss: #243C24;
@@ -702,12 +703,18 @@
         </div>
         <h1>Perfekt &ndash; <span class="highlight">vielen Dank!</span><br>Ihr Recruiting-Report 2026 wartet.</h1>
         <p class="hero-sub">
-          Sie haben den Report parallel per WhatsApp und E-Mail bekommen. Hier k&ouml;nnen Sie ihn zus&auml;tzlich direkt herunterladen &ndash; jederzeit, ohne Anmeldung.
+          Sie haben den Report per WhatsApp erhalten. Hier k&ouml;nnen Sie ihn zus&auml;tzlich direkt herunterladen &ndash; jederzeit, ohne Anmeldung.
         </p>
-        <a href="../recruiting-report-2026.pdf" download="GreenCareers-Recruiting-Report-2026.pdf" class="btn-download">
+        <button type="button" id="btn-download-pdf" class="btn-download">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
-          Report jetzt herunterladen
-        </a>
+          <span class="btn-download-text">Report jetzt herunterladen</span>
+        </button>
+        <noscript>
+          <a href="../recruiting-report-2026.pdf" download="GreenCareers-Recruiting-Report-2026.pdf" class="btn-download" style="margin-top:12px; display:inline-flex;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+            Report jetzt herunterladen
+          </a>
+        </noscript>
         <div class="meta-chips">
           <span class="meta-chip"><strong>PDF</strong></span>
           <span class="meta-chip"><strong>32</strong> Seiten</span>
@@ -858,6 +865,8 @@
               <label for="t-privacy">Ich akzeptiere die <a href="https://www.green-careers.de/datenschutz" target="_blank" rel="noopener">Datenschutzerkl&auml;rung</a> und bin einverstanden, kontaktiert zu werden.</label>
             </div>
 
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAADBMRHCv_JYxMJDl" data-callback="onTerminTurnstileSuccess" data-theme="dark" style="margin-top:14px;"></div>
+
             <button type="submit" class="termin-submit">
               Kostenloses Strategie-Gespr&auml;ch anfragen &rarr;
             </button>
@@ -894,6 +903,53 @@
   </footer>
 
   <script>
+    // === BLOB-DOWNLOAD f\u00fcr PDF (umgeht WhatsApp In-App PDF-Viewer) ===
+    const PDF_URL = '../recruiting-report-2026.pdf';
+    const PDF_FILENAME = 'GreenCareers-Recruiting-Report-2026.pdf';
+    const dlBtn = document.getElementById('btn-download-pdf');
+    if (dlBtn) {
+      const dlText = dlBtn.querySelector('.btn-download-text');
+      const origText = dlText ? dlText.textContent : 'Report jetzt herunterladen';
+
+      dlBtn.addEventListener('click', async () => {
+        if (dlBtn.disabled) return;
+        dlBtn.disabled = true;
+        if (dlText) dlText.textContent = 'Download wird vorbereitet\u2026';
+
+        try {
+          const res = await fetch(PDF_URL);
+          if (!res.ok) throw new Error('PDF fetch failed: ' + res.status);
+          const blob = await res.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = PDF_FILENAME;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+
+          if (dlText) dlText.textContent = '\u2713 Download gestartet!';
+          setTimeout(() => {
+            if (dlText) dlText.textContent = origText;
+            dlBtn.disabled = false;
+          }, 4000);
+        } catch (err) {
+          console.warn('Blob-Download fehlgeschlagen, Fallback aktiv:', err);
+          // Fallback: regul\u00e4rer Link
+          const a = document.createElement('a');
+          a.href = PDF_URL;
+          a.download = PDF_FILENAME;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          if (dlText) dlText.textContent = origText;
+          dlBtn.disabled = false;
+        }
+      });
+    }
+
     // Navbar scroll
     const navbar = document.getElementById('navbar');
     let ticking = false;
@@ -920,7 +976,18 @@
           if (stored) data = JSON.parse(stored) || {};
         } catch(e) {}
 
-        // Versuch 2: URL-Parameter \u00fcberschreiben (z.B. wenn Link aus WhatsApp)
+        // Versuch 2: Base64-encoded JSON via ?d=...
+        const dParam = params.get('d');
+        if (dParam) {
+          try {
+            const decoded = JSON.parse(atob(dParam));
+            if (decoded && typeof decoded === 'object') {
+              data = Object.assign(data, decoded);
+            }
+          } catch(e) { /* still ignorieren */ }
+        }
+
+        // Versuch 3: Einzelne URL-Parameter \u00fcberschreiben (z.B. ?vorname=Klaus&...)
         ['vorname','nachname','unternehmen','email','phone'].forEach(k => {
           const v = params.get(k);
           if (v) data[k] = v;
@@ -947,10 +1014,17 @@
     // *** Make-Webhook-URL hier eintragen (kann derselbe wie LP-Webhook sein, dann mit "source" filtern) ***
     const TERMIN_WEBHOOK_URL = 'https://hook.eu1.make.com/uhmr9pa7tkbvs5uyicjonpmjugv9rvng';
 
+    // === Cloudflare Turnstile Token ===
+    let terminTurnstileToken = '';
+    window.onTerminTurnstileSuccess = function(token) { terminTurnstileToken = token; };
+
     const terminForm = document.getElementById('termin-form');
     if (terminForm) {
       terminForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const errEl = document.getElementById('termin-error');
+        errEl.style.display = 'none';
+
         const required = ['t-vorname', 't-nachname', 't-unternehmen', 't-phone', 't-email'];
         let valid = true;
         required.forEach(id => {
@@ -964,6 +1038,13 @@
         }
         if (!document.getElementById('t-privacy').checked) valid = false;
         if (!valid) return;
+
+        // Cloudflare Turnstile: Token muss vorhanden sein
+        if (!terminTurnstileToken) {
+          errEl.textContent = 'Bitte warten Sie kurz auf die Sicherheitspr\u00fcfung.';
+          errEl.style.display = 'block';
+          return;
+        }
 
         const btn = terminForm.querySelector('button[type="submit"]');
         const origText = btn.textContent;
@@ -980,7 +1061,8 @@
           herausforderung: document.getElementById('t-herausforderung').value.trim(),
           source: 'download-page-termin-anfrage',
           timestamp: new Date().toISOString(),
-          page_url: window.location.href
+          page_url: window.location.href,
+          'cf-turnstile-response': terminTurnstileToken
         };
 
         try {
@@ -997,11 +1079,16 @@
           }
           terminForm.style.display = 'none';
           document.getElementById('termin-success').classList.add('active');
+          terminTurnstileToken = '';
         } catch (err) {
           console.error(err);
           btn.textContent = origText;
           btn.disabled = false;
-          document.getElementById('termin-error').style.display = 'block';
+          errEl.textContent = 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.';
+          errEl.style.display = 'block';
+          // Turnstile-Widget zur\u00fccksetzen, damit der User es neu l\u00f6sen kann
+          terminTurnstileToken = '';
+          if (window.turnstile) { try { window.turnstile.reset(); } catch(e) {} }
         }
       });
     }
