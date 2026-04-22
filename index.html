@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '634469765867935');
-  fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=634469765867935&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
@@ -1164,31 +1147,31 @@
           <p>Tragen Sie Ihre Daten ein &ndash; Sie erhalten den Report in wenigen Minuten per WhatsApp und E-Mail.</p>
         </div>
 
-        <form id="lead-form" novalidate>
+        <form id="lead-form" novalidate autocomplete="on">
           <div class="form-row">
             <div class="form-group">
               <label for="vorname">Vorname *</label>
-              <input type="text" id="vorname" name="vorname" placeholder="z.B. Klaus" required>
+              <input type="text" id="vorname" name="vorname" placeholder="z.B. Klaus" required autocomplete="given-name" autocapitalize="words" spellcheck="false">
             </div>
             <div class="form-group">
               <label for="nachname">Nachname *</label>
-              <input type="text" id="nachname" name="nachname" placeholder="z.B. Bergmann" required>
+              <input type="text" id="nachname" name="nachname" placeholder="z.B. Bergmann" required autocomplete="family-name" autocapitalize="words" spellcheck="false">
             </div>
           </div>
 
           <div class="form-group">
             <label for="unternehmen">Unternehmensname *</label>
-            <input type="text" id="unternehmen" name="unternehmen" placeholder="z.B. Bergmann GaLaBau GmbH" required>
+            <input type="text" id="unternehmen" name="unternehmen" placeholder="z.B. Bergmann GaLaBau GmbH" required autocomplete="organization" autocapitalize="words" spellcheck="false">
           </div>
 
           <div class="form-group">
             <label for="email">E-Mail-Adresse *</label>
-            <input type="email" id="email" name="email" placeholder="ihre@firma.de" required>
+            <input type="email" id="email" name="email" placeholder="ihre@firma.de" required autocomplete="email" autocapitalize="none" spellcheck="false" inputmode="email">
           </div>
 
           <div class="form-group">
             <label for="phone">WhatsApp-f&auml;hige Telefonnummer *</label>
-            <input type="tel" id="phone" name="phone" placeholder="+49 170 1234567" required>
+            <input type="tel" id="phone" name="phone" placeholder="+49 170 1234567" required autocomplete="tel" inputmode="tel">
             <div class="form-hint-box">
               <span class="form-hint-icon">&#128241;</span>
               <span class="form-hint-text"><strong>Wichtig:</strong> Wir senden den Report direkt per WhatsApp. Bitte geben Sie eine Nummer an, auf der Sie WhatsApp nutzen &ndash; sonst k&ouml;nnen wir Ihnen den Report nicht zustellen.</span>
@@ -1406,15 +1389,21 @@
         email: document.getElementById('email').value.trim(),
         phone: document.getElementById('phone').value.trim(),
         source: 'lp-recruiting-report-2026',
-        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
-        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
-        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
-        utm_content: new URLSearchParams(window.location.search).get('utm_content') || '',
-        fbclid: new URLSearchParams(window.location.search).get('fbclid') || '',
         timestamp: new Date().toISOString(),
         page_url: window.location.href,
         user_agent: navigator.userAgent
       };
+
+      // Daten f\u00fcr Download-Seite speichern (Prefill Termin-Formular)
+      try {
+        localStorage.setItem('gc_lead_data', JSON.stringify({
+          vorname: payload.vorname,
+          nachname: payload.nachname,
+          unternehmen: payload.unternehmen,
+          email: payload.email,
+          phone: payload.phone
+        }));
+      } catch(e) { /* localStorage blockiert (z.B. Inkognito), egal */ }
 
       try {
         if (MAKE_WEBHOOK_URL && MAKE_WEBHOOK_URL !== 'HIER_MAKE_WEBHOOK_URL_EINTRAGEN') {
