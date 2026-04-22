@@ -304,7 +304,7 @@
       display: flex; align-items: center;
       position: relative; z-index: 2;
     }
-    .book-logo-img { height: 18px; width: auto; opacity: 0.95; }
+    .book-logo-img { height: 32px; width: auto; opacity: 0.95; }
     .book-title-block { position: relative; z-index: 2; }
     .book-eyebrow {
       font-size: 0.54rem; font-weight: 600;
@@ -432,59 +432,187 @@
       line-height: 1.55;
     }
 
-    /* === SECONDARY CTA === */
-    .secondary-cta {
+    /* === TERMIN-BLOCK (inline form, dark) === */
+    .termin-block {
       margin-top: 50px;
-      padding: 28px 24px;
+      padding: 32px 24px;
       background: linear-gradient(135deg, var(--moss-dark) 0%, var(--moss) 100%);
-      border-radius: 18px;
-      text-align: center;
+      border-radius: 22px;
       color: var(--white);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 16px 50px rgba(36,60,36,0.18);
     }
-    .secondary-cta::before {
+    .termin-block::before {
       content: '';
       position: absolute;
       top: -50%; right: -20%;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,210,97,0.15) 0%, transparent 65%);
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,210,97,0.18) 0%, transparent 65%);
       border-radius: 50%;
       pointer-events: none;
     }
-    .secondary-cta-eyebrow {
+    .termin-block::after {
+      content: '';
+      position: absolute;
+      bottom: -40%; left: -10%;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(82,194,119,0.12) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .termin-header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative; z-index: 2;
+    }
+    .termin-eyebrow {
       font-size: 0.7rem; font-weight: 700;
       color: var(--poison-green);
       letter-spacing: 0.14em; text-transform: uppercase;
       margin-bottom: 10px;
-      position: relative; z-index: 2;
     }
-    .secondary-cta h3 {
-      font-size: 1.2rem; font-weight: 800;
+    .termin-header h3 {
+      font-size: 1.35rem; font-weight: 800;
       color: var(--white);
-      margin-bottom: 8px;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      position: relative; z-index: 2;
+      margin-bottom: 10px;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
     }
-    .secondary-cta p {
-      font-size: 0.88rem; color: rgba(255,255,255,0.78);
-      line-height: 1.6; max-width: 480px; margin: 0 auto 18px;
-      position: relative; z-index: 2;
+    .termin-header p {
+      font-size: 0.9rem; color: rgba(255,255,255,0.78);
+      line-height: 1.6; max-width: 520px; margin: 0 auto;
     }
-    .secondary-cta-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--gradient-cta); color: var(--sand-ash);
-      font-weight: 700; font-size: 0.92rem;
-      padding: 14px 26px; border-radius: 50px;
+
+    #termin-form {
+      position: relative; z-index: 2;
+      max-width: 540px; margin: 0 auto;
+    }
+    .termin-row {
+      display: grid; grid-template-columns: 1fr; gap: 12px;
+    }
+    .termin-group { margin-bottom: 12px; }
+    .termin-group label {
+      display: block;
+      font-size: 0.78rem; font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 6px;
+    }
+    .termin-group input,
+    .termin-group select,
+    .termin-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
       transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(0,210,97,0.3);
-      position: relative; z-index: 2;
-      text-decoration: none;
+      outline: none;
     }
-    .secondary-cta-btn:hover {
+    .termin-group input::placeholder,
+    .termin-group textarea::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    .termin-group input:focus,
+    .termin-group select:focus,
+    .termin-group textarea:focus {
+      border-color: var(--poison-green);
+      background: rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 4px rgba(0,210,97,0.15);
+    }
+    .termin-group select option {
+      background: var(--moss-dark);
+      color: var(--white);
+    }
+    .termin-group textarea {
+      resize: vertical;
+      min-height: 70px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .termin-checkbox {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-top: 14px;
+      padding: 0 2px;
+    }
+    .termin-checkbox input[type="checkbox"] {
+      width: 17px; height: 17px;
+      margin-top: 3px;
+      accent-color: var(--poison-green);
+      flex-shrink: 0;
+    }
+    .termin-checkbox label {
+      font-size: 0.74rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+    }
+    .termin-checkbox a {
+      color: var(--poison-green);
+      text-decoration: underline;
+    }
+    .termin-submit {
+      width: 100%;
+      padding: 16px 24px;
+      min-height: 56px;
+      background: var(--gradient-cta);
+      color: var(--sand-ash);
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 6px 26px rgba(0,210,97,0.35);
+      margin-top: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .termin-submit::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 80%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      animation: shimmer 3.5s ease-in-out infinite;
+    }
+    .termin-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,210,97,0.5);
+      box-shadow: 0 12px 40px rgba(0,210,97,0.5);
+    }
+    .termin-submit:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none;
+    }
+    .termin-hint {
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 12px;
+    }
+
+    .termin-success {
+      display: none;
+      text-align: center;
+      padding: 30px 16px;
+      position: relative; z-index: 2;
+      max-width: 480px; margin: 0 auto;
+    }
+    .termin-success.active {
+      display: block;
+      animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .termin-success-icon {
+      font-size: 3rem;
+      margin-bottom: 14px;
+    }
+    .termin-success h3 {
+      font-size: 1.2rem; font-weight: 800;
+      color: var(--poison-green);
+      margin-bottom: 8px;
+    }
+    .termin-success p {
+      font-size: 0.9rem; color: rgba(255,255,255,0.85);
+      line-height: 1.55;
     }
 
     /* === FOOTER === */
@@ -503,6 +631,9 @@
     /* === DESKTOP === */
     @media (min-width: 640px) {
       .contents-grid { grid-template-columns: 1fr 1fr; }
+      .termin-row { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .termin-block { padding: 40px 36px; }
+      .termin-header h3 { font-size: 1.55rem; }
     }
     @media (min-width: 1024px) {
       .container { padding: 0 40px; }
@@ -528,7 +659,7 @@
       .book-cover { padding: 32px 28px 24px; }
       .book-title { font-size: 1.5rem; }
       .book-year { font-size: 3.6rem; }
-      .book-logo-img { height: 22px; }
+      .book-logo-img { height: 40px; }
       .book-eyebrow { font-size: 0.6rem; }
       .book-branch { font-size: 0.54rem; max-width: 120px; }
       .book-pages-count { font-size: 0.52rem; }
@@ -571,7 +702,7 @@
         </div>
         <h1>Perfekt &ndash; <span class="highlight">vielen Dank!</span><br>Ihr Recruiting-Report 2026 wartet.</h1>
         <p class="hero-sub">
-          Sie haben den Report per WhatsApp erhalten. Hier k&ouml;nnen Sie ihn zus&auml;tzlich direkt herunterladen &ndash; jederzeit, ohne Anmeldung.
+          Sie haben den Report parallel per WhatsApp und E-Mail bekommen. Hier k&ouml;nnen Sie ihn zus&auml;tzlich direkt herunterladen &ndash; jederzeit, ohne Anmeldung.
         </p>
         <a href="../recruiting-report-2026.pdf" download="GreenCareers-Recruiting-Report-2026.pdf" class="btn-download">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
@@ -669,13 +800,78 @@
           </div>
         </div>
 
-        <div class="secondary-cta">
-          <div class="secondary-cta-eyebrow">N&auml;chster Schritt</div>
-          <h3>Noch konkreter? Lassen Sie uns sprechen.</h3>
-          <p>In 15 Minuten analysieren wir Ihren Bewerberpool nach PLZ und zeigen Ihnen, wie viele passende Fachkr&auml;fte aktuell in Ihrer Region verf&uuml;gbar sind.</p>
-          <a href="https://www.green-careers.de/arbeitgeber" class="secondary-cta-btn">
-            Kostenloses Strategie-Gespr&auml;ch buchen &rarr;
-          </a>
+        <!-- INLINE TERMIN-FORMULAR -->
+        <div class="termin-block">
+          <div class="termin-header">
+            <div class="termin-eyebrow">F&uuml;r Ihren Betrieb individuell</div>
+            <h3>Schauen wir uns Ihre Situation gemeinsam an.</h3>
+            <p>In einem kostenlosen 15-Minuten-Gespr&auml;ch analysieren wir Ihre konkrete Recruiting-Situation: aktuelle Vakanzen, regionalen Bewerberpool, passende Strategie. Tragen Sie Ihre Daten ein &ndash; wir melden uns innerhalb von 24 Stunden mit Terminvorschl&auml;gen.</p>
+          </div>
+
+          <form id="termin-form" novalidate autocomplete="on">
+            <div class="termin-row">
+              <div class="termin-group">
+                <label for="t-vorname">Vorname *</label>
+                <input type="text" id="t-vorname" name="vorname" placeholder="z.B. Klaus" required autocomplete="given-name" autocapitalize="words" spellcheck="false">
+              </div>
+              <div class="termin-group">
+                <label for="t-nachname">Nachname *</label>
+                <input type="text" id="t-nachname" name="nachname" placeholder="z.B. Bergmann" required autocomplete="family-name" autocapitalize="words" spellcheck="false">
+              </div>
+            </div>
+
+            <div class="termin-group">
+              <label for="t-unternehmen">Unternehmensname *</label>
+              <input type="text" id="t-unternehmen" name="unternehmen" placeholder="z.B. Bergmann GaLaBau GmbH" required autocomplete="organization" autocapitalize="words" spellcheck="false">
+            </div>
+
+            <div class="termin-row">
+              <div class="termin-group">
+                <label for="t-email">E-Mail *</label>
+                <input type="email" id="t-email" name="email" placeholder="ihre@firma.de" required autocomplete="email" autocapitalize="none" spellcheck="false" inputmode="email">
+              </div>
+              <div class="termin-group">
+                <label for="t-phone">Telefon *</label>
+                <input type="tel" id="t-phone" name="phone" placeholder="+49 170 1234567" required autocomplete="tel" inputmode="tel">
+              </div>
+            </div>
+
+            <div class="termin-group">
+              <label for="t-mitarbeiter">Anzahl Mitarbeiter</label>
+              <select id="t-mitarbeiter" name="mitarbeiter">
+                <option value="">-- Bitte w&auml;hlen --</option>
+                <option value="1-5">1&ndash;5 Mitarbeiter</option>
+                <option value="6-15">6&ndash;15 Mitarbeiter</option>
+                <option value="16-30">16&ndash;30 Mitarbeiter</option>
+                <option value="31-50">31&ndash;50 Mitarbeiter</option>
+                <option value="51+">&Uuml;ber 50 Mitarbeiter</option>
+              </select>
+            </div>
+
+            <div class="termin-group">
+              <label for="t-herausforderung">Was ist Ihre gr&ouml;&szlig;te Recruiting-Herausforderung? <span style="color:rgba(255,255,255,0.4); font-weight:400;">(optional)</span></label>
+              <textarea id="t-herausforderung" name="herausforderung" rows="3" placeholder="z.B. Suche seit 4 Monaten einen Vorarbeiter f&uuml;r Pflasterarbeiten..."></textarea>
+            </div>
+
+            <div class="termin-checkbox">
+              <input type="checkbox" id="t-privacy" name="privacy" required>
+              <label for="t-privacy">Ich akzeptiere die <a href="https://www.green-careers.de/datenschutz" target="_blank" rel="noopener">Datenschutzerkl&auml;rung</a> und bin einverstanden, kontaktiert zu werden.</label>
+            </div>
+
+            <button type="submit" class="termin-submit">
+              Kostenloses Strategie-Gespr&auml;ch anfragen &rarr;
+            </button>
+            <p id="termin-error" style="display:none; background:rgba(229,62,62,0.15); border:1px solid rgba(229,62,62,0.4); color:#ffb4b4; padding:12px 14px; border-radius:10px; font-size:0.8rem; margin-top:12px; text-align:center;">
+              Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.
+            </p>
+            <p class="termin-hint">&#9203; Antwort innerhalb von 24 Stunden &middot; &#128274; DSGVO-konform &middot; &#10003; Unverbindlich</p>
+          </form>
+
+          <div id="termin-success" class="termin-success">
+            <div class="termin-success-icon">&#9989;</div>
+            <h3>Perfekt &ndash; Ihre Anfrage ist eingegangen!</h3>
+            <p>Wir melden uns innerhalb von 24 Stunden mit Terminvorschl&auml;gen f&uuml;r Ihr kostenloses Strategie-Gespr&auml;ch.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -711,13 +907,104 @@
       }
     });
 
-    // Smooth scroll to form
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', e => {
+    // === PREFILL TERMIN-FORMULAR ===
+    // Quellen in dieser Reihenfolge: 1) URL-Parameter (?vorname=...), 2) localStorage (vom LP-Submit)
+    (function prefillTerminForm() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        let data = {};
+
+        // Versuch 1: localStorage (Standard-Weg)
+        try {
+          const stored = localStorage.getItem('gc_lead_data');
+          if (stored) data = JSON.parse(stored) || {};
+        } catch(e) {}
+
+        // Versuch 2: URL-Parameter \u00fcberschreiben (z.B. wenn Link aus WhatsApp)
+        ['vorname','nachname','unternehmen','email','phone'].forEach(k => {
+          const v = params.get(k);
+          if (v) data[k] = v;
+        });
+
+        // In Form eintragen
+        const map = {
+          'vorname': 't-vorname',
+          'nachname': 't-nachname',
+          'unternehmen': 't-unternehmen',
+          'email': 't-email',
+          'phone': 't-phone'
+        };
+        Object.keys(map).forEach(k => {
+          const el = document.getElementById(map[k]);
+          if (el && data[k]) el.value = data[k];
+        });
+      } catch(e) {
+        console.warn('Prefill fehlgeschlagen:', e);
+      }
+    })();
+
+    // === TERMIN-FORMULAR ===
+    // *** Make-Webhook-URL hier eintragen (kann derselbe wie LP-Webhook sein, dann mit "source" filtern) ***
+    const TERMIN_WEBHOOK_URL = 'https://hook.eu1.make.com/uhmr9pa7tkbvs5uyicjonpmjugv9rvng';
+
+    const terminForm = document.getElementById('termin-form');
+    if (terminForm) {
+      terminForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        document.querySelector(anchor.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const required = ['t-vorname', 't-nachname', 't-unternehmen', 't-phone', 't-email'];
+        let valid = true;
+        required.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) { el.style.borderColor = '#e53e3e'; valid = false; }
+          else { el.style.borderColor = ''; }
+        });
+        const emailEl = document.getElementById('t-email');
+        if (emailEl.value && !emailEl.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+          emailEl.style.borderColor = '#e53e3e'; valid = false;
+        }
+        if (!document.getElementById('t-privacy').checked) valid = false;
+        if (!valid) return;
+
+        const btn = terminForm.querySelector('button[type="submit"]');
+        const origText = btn.textContent;
+        btn.textContent = 'Wird gesendet\u2026';
+        btn.disabled = true;
+
+        const payload = {
+          vorname: document.getElementById('t-vorname').value.trim(),
+          nachname: document.getElementById('t-nachname').value.trim(),
+          unternehmen: document.getElementById('t-unternehmen').value.trim(),
+          phone: document.getElementById('t-phone').value.trim(),
+          email: document.getElementById('t-email').value.trim(),
+          mitarbeiter: document.getElementById('t-mitarbeiter').value,
+          herausforderung: document.getElementById('t-herausforderung').value.trim(),
+          source: 'download-page-termin-anfrage',
+          timestamp: new Date().toISOString(),
+          page_url: window.location.href
+        };
+
+        try {
+          if (TERMIN_WEBHOOK_URL && TERMIN_WEBHOOK_URL !== 'HIER_MAKE_WEBHOOK_URL_EINTRAGEN') {
+            const res = await fetch(TERMIN_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error('Webhook ' + res.status);
+          } else {
+            console.warn('Termin-Webhook nicht konfiguriert. Payload:', payload);
+            await new Promise(r => setTimeout(r, 800));
+          }
+          terminForm.style.display = 'none';
+          document.getElementById('termin-success').classList.add('active');
+        } catch (err) {
+          console.error(err);
+          btn.textContent = origText;
+          btn.disabled = false;
+          document.getElementById('termin-error').style.display = 'block';
+        }
       });
-    });
+    }
   </script>
 </body>
 </html>
