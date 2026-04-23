@@ -15,8 +15,17 @@
   <script>
     var lpTurnstileToken = '';
     function onLpTurnstileSuccess(token) { lpTurnstileToken = token; }
+    function onTurnstileLoad() {
+      if (window.turnstile && document.getElementById('turnstile-box')) {
+        turnstile.render('#turnstile-box', {
+          sitekey: '0x4AAAAAAADBMRHCv_JYxMJDl',
+          callback: onLpTurnstileSuccess,
+          theme: 'light'
+        });
+      }
+    }
   </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" defer></script>
   <style>
     :root {
       --moss: #243C24;
@@ -1188,7 +1197,7 @@
             <label for="privacy">Ich akzeptiere die <a href="https://www.green-careers.de/datenschutz" target="_blank" rel="noopener">Datenschutzerkl&auml;rung</a> und bin einverstanden, Recruiting-Tipps von GreenCareers zu erhalten.</label>
           </div>
 
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAADBMRHCv_JYxMJDl" data-callback="onLpTurnstileSuccess" data-theme="light" style="margin-top:14px;"></div>
+          <div id="turnstile-box" style="margin-top:14px;"></div>
 
           <button type="submit" class="btn-submit" id="submit-btn">Report kostenlos erhalten &rarr;</button>
           <div class="form-error-msg" id="form-error">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.</div>
