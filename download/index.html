@@ -15,8 +15,17 @@
   <script>
     var terminTurnstileToken = '';
     function onTerminTurnstileSuccess(token) { terminTurnstileToken = token; }
+    function onTurnstileLoad() {
+      if (window.turnstile && document.getElementById('turnstile-box')) {
+        turnstile.render('#turnstile-box', {
+          sitekey: '0x4AAAAAAADBMRHCv_JYxMJDl',
+          callback: onTerminTurnstileSuccess,
+          theme: 'dark'
+        });
+      }
+    }
   </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" defer></script>
   <style>
     :root {
       --moss: #243C24;
@@ -869,7 +878,7 @@
               <label for="t-privacy">Ich akzeptiere die <a href="https://www.green-careers.de/datenschutz" target="_blank" rel="noopener">Datenschutzerkl&auml;rung</a> und bin einverstanden, kontaktiert zu werden.</label>
             </div>
 
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAAADBMRHCv_JYxMJDl" data-callback="onTerminTurnstileSuccess" data-theme="dark" style="margin-top:14px;"></div>
+            <div id="turnstile-box" style="margin-top:14px;"></div>
 
             <button type="submit" class="termin-submit">
               Kostenloses Strategie-Gespr&auml;ch anfragen &rarr;
