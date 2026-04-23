@@ -12,20 +12,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    var lpTurnstileToken = '';
-    function onLpTurnstileSuccess(token) { lpTurnstileToken = token; }
-    function onTurnstileLoad() {
-      if (window.turnstile && document.getElementById('turnstile-box')) {
-        turnstile.render('#turnstile-box', {
-          sitekey: '0x4AAAAAAADBMRHCv_JYxMJDl',
-          callback: onLpTurnstileSuccess,
-          theme: 'light'
-        });
-      }
-    }
-  </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" defer></script>
   <style>
     :root {
       --moss: #243C24;
@@ -1197,8 +1183,6 @@
             <label for="privacy">Ich akzeptiere die <a href="https://www.green-careers.de/datenschutz" target="_blank" rel="noopener">Datenschutzerkl&auml;rung</a> und bin einverstanden, Recruiting-Tipps von GreenCareers zu erhalten.</label>
           </div>
 
-          <div id="turnstile-box" style="margin-top:14px;"></div>
-
           <button type="submit" class="btn-submit" id="submit-btn">Report kostenlos erhalten &rarr;</button>
           <div class="form-error-msg" id="form-error">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.</div>
         </form>
@@ -1241,7 +1225,6 @@
     // 4. Im Szenario danach: Slack (Channel: Sales) + HTTP-Request zum Dashboard
     const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/rmo3hsgo61p34rfghkm6fj9flb1ytctc';
 
-    // lpTurnstileToken + onLpTurnstileSuccess sind im <head> definiert (vor Turnstile-Script)
   </script>
 
   <script>
@@ -1394,13 +1377,6 @@
       if (!document.getElementById('privacy').checked) valid = false;
       if (!valid) return;
 
-      // Cloudflare Turnstile: Token muss vorhanden sein
-      if (!lpTurnstileToken) {
-        errorMsg.textContent = 'Bitte warten Sie kurz auf die Sicherheitspr\u00fcfung.';
-        errorMsg.classList.add('active');
-        return;
-      }
-
       // Disable button
       const originalText = submitBtn.textContent;
       submitBtn.textContent = 'Wird gesendet\u2026';
@@ -1416,8 +1392,7 @@
         source: 'lp-recruiting-report-2026',
         timestamp: new Date().toISOString(),
         page_url: window.location.href,
-        user_agent: navigator.userAgent,
-        'cf-turnstile-response': lpTurnstileToken
+        user_agent: navigator.userAgent
       };
 
       // Daten f\u00fcr Download-Seite speichern (Prefill Termin-Formular)
@@ -1449,16 +1424,12 @@
         form.style.display = 'none';
         document.querySelector('.form-header').style.display = 'none';
         document.getElementById('form-success').classList.add('active');
-        lpTurnstileToken = '';
       } catch (err) {
         console.error('Form submit error:', err);
         errorMsg.textContent = 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.';
         errorMsg.classList.add('active');
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        // Turnstile-Widget zur\u00fccksetzen, damit der User es neu l\u00f6sen kann
-        lpTurnstileToken = '';
-        if (window.turnstile) { try { window.turnstile.reset(); } catch(e) {} }
       }
     });
   </script>
