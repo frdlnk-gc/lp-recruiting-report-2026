@@ -1729,6 +1729,13 @@
     // LP-View beim Page-Load
     trackFunnelEvent('lp_view', null);
 
+    // Quiz-Start-Tracking (alle CTA-Buttons, die zum #formular fuehren)
+    document.querySelectorAll('a[href="#formular"], #sticky-cta').forEach(function(el) {
+      el.addEventListener('click', function() {
+        trackPixelEvent('Quiz_Started', { landingpage: LANDINGPAGE_ID, cta_location: el.className || 'unknown' });
+      }, { once: false });
+    });
+
     // =====================================================
     // SLIDE-NAVIGATION
     // =====================================================

@@ -936,6 +936,16 @@
         dlBtn.disabled = true;
         if (dlText) dlText.textContent = 'Download wird vorbereitet\u2026';
 
+        // Meta Pixel: PDF-Download-Click
+        try {
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', 'Report_Downloaded', {
+              content_name: 'Recruiting-Report 2026 PDF',
+              landingpage: 'recruiting-report-2026-download'
+            });
+          }
+        } catch(e) { /* silent */ }
+
         try {
           const res = await fetch(PDF_URL);
           if (!res.ok) throw new Error('PDF fetch failed: ' + res.status);
